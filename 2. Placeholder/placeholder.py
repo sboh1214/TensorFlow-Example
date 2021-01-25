@@ -1,28 +1,23 @@
 import tensorflow as tf
 
-tf.compat.v1.disable_eager_execution()
+x_data = [[1, 2, 3], [4, 5, 6]]
 
-X = tf.compat.v1.placeholder(tf.float32, [None, 3])
-print(X)
+w = tf.Variable(tf.random.normal([3, 2]))
+b = tf.Variable(tf.random.normal([2, 1]))
 
-X_data = [[1, 2, 3], [4, 5, 6]]
 
-W = tf.Variable(tf.compat.v1.random_normal([3, 2]))
-B = tf.Variable(tf.compat.v1.random_normal([2, 1]))
+@tf.function
+def forward(x):
+    return tf.matmul(x, w) + b
 
-expr = tf.matmul(X, W) + B
 
-sess = tf.compat.v1.Session()
-sess.run(tf.compat.v1.global_variables_initializer())
-
-print("=== X_data ===")
-print(X_data)
-print("=== W      ===")
-print(sess.run(W))
-print("=== B      ===")
-print(sess.run(B))
+print("=== x_data ===")
+print(x_data)
+print("=== w      ===")
+print(w)
+print("=== b      ===")
+print(b)
 
 print("=== expr   ===")
-print(sess.run(expr, feed_dict={X: X_data}))
-
-sess.close()
+for x in x_data:
+    print(forward(x))
